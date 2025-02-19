@@ -16,6 +16,7 @@ import java.util.function.Function;
 
 @Component
 public class JwtService {
+    public String username="";
 
     public static final String SECRET = "357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
 
@@ -46,7 +47,7 @@ public class JwtService {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
+        username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
@@ -64,7 +65,7 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*1))
+                .setExpiration(new Date(System.currentTimeMillis()+10000*60*1))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 

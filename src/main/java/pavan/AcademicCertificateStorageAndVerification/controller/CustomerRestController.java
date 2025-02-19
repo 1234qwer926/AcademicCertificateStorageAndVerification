@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import pavan.AcademicCertificateStorageAndVerification.Role;
 import pavan.AcademicCertificateStorageAndVerification.model.Customer;
 import pavan.AcademicCertificateStorageAndVerification.repository.CustomerRepo;
 import pavan.AcademicCertificateStorageAndVerification.service.JwtService;
@@ -36,6 +37,7 @@ public class CustomerRestController {
 
     @PostMapping("/login")
     public ResponseEntity<String> loginCheck(@RequestBody Customer c) {
+        System.out.println(Role.ADMIN);
 
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(c.getUname(), c.getPwd());
@@ -57,15 +59,16 @@ public class CustomerRestController {
 
     @PostMapping("/register")
     public String registerCustomer(@RequestBody Customer customer) {
+        customer.setPwd(pwdEncoder.encode(customer.getPwd()));
 
-        // duplicate check
-
-        String encodedPwd = pwdEncoder.encode(customer.getPwd());
-        customer.setPwd(encodedPwd);
+        if (customer.getRole() == null) {
+            customer.setRole(Role.STUDENT); // Default role as USER
+            System.out.println(Role.STUDENT);
+        }
 
         crepo.save(customer);
-
         return "User registered";
     }
+
 
 }

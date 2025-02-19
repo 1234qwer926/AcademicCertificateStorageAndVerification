@@ -50,16 +50,17 @@ public class AppSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/login","/api/register").permitAll()
+                .requestMatchers("/api/login", "/api/register").permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/student/**").hasRole("STUDENT")
+                .requestMatchers("/api/verifier/**").hasRole("VERIFIER")
+                .anyRequest().authenticated()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/api/**")
-                .authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class).build();
-
+                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
+
 }

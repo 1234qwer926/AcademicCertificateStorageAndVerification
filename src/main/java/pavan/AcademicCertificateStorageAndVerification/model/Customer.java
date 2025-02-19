@@ -1,9 +1,7 @@
 package pavan.AcademicCertificateStorageAndVerification.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import pavan.AcademicCertificateStorageAndVerification.Role;
 
 
 @Entity
@@ -15,6 +13,21 @@ public class Customer {
     private String uname;
     private String pwd;
     private Long phno;
+
+    private String email;
+
+    private String rollNo;
+    @Enumerated(EnumType.STRING)
+    private Role role; // Add role field
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 
     public Integer getCid() {
         return cid;
@@ -48,4 +61,19 @@ public class Customer {
         this.phno = phno;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getRollNo() {
+        return rollNo;
+    }
+
+    public void setRollNo(String rollNo) {
+        this.rollNo = rollNo;
+    }
 }

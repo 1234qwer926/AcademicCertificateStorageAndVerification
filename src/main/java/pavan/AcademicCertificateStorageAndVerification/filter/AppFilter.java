@@ -19,6 +19,12 @@ import java.io.IOException;
 @Component
 public class AppFilter extends OncePerRequestFilter {
 
+    private String username=null;
+
+    public String getUsername() {
+        return username;
+    }
+
     @Autowired
     private JwtService jwtService;
 
@@ -30,11 +36,12 @@ public class AppFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
         String token = null;
-        String username = null;
+        username = null;
         if(authHeader != null && authHeader.startsWith("Bearer ")){
             token = authHeader.substring(7);
             username = jwtService.extractUsername(token);
         }
+        System.out.println(username);
 
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
